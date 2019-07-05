@@ -1,26 +1,48 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react'
+import './App.css'
+import Nav from './Screen/Navbar'
+import Search from './Screen/search'
+import Book from './Screen/books'
+import Data from './data'
+import BookDetail from './Screen/Detail'
+import { Route, Redirect, BrowserRouter as Router } from 'react-router-dom'
+import Modal from './Screen/modal'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default class App extends Component {
+  constructor() {
+    super()
+    this.state = {Data,show : false}
+  }
+  showModal = () => {
+    this.setState({ show: true })
+  }
+
+  hideModal = () => {
+    this.setState({ show: false })
+  }
+  addData = (dataAdded) => {
+    this.state.Data.push(dataAdded)
+    console.log(this.state.Data)
+  }
+  deleteData = (deleteData) =>{
+    console.log(deleteData)
+    this.state.Data.splice(deleteData,1)
+  }
+  editData = (editData) =>{
+    this.setState(this.state.Data.push(editData))
+  }
+  render() {
+    return (
+      <div id="app">
+        <Router>
+          <Redirect exact from="/"  to="/book" />
+          <Route exact path={"/book"} component={Nav} />
+          <Route exact path={"/book"} component={Search} />
+          <Route exact path={"/book"} render={() => <Book prop={this.state} showModal={this.showModal} />} />
+          <Route exact path={"/book/:bookid"} render={(props) => <BookDetail data={this.state} showModal={this.showModal} deleteData={this.deleteData}{...props} /> }  />
+          <Route exact path={"/book"} render={()=><Modal show={this.state.show} handleClose={this.hideModal} dataAdded={this.addData}/>}/>
+        </Router>
+      </div>
+    )
+  }
 }
-
-export default App;
