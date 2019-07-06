@@ -26,9 +26,11 @@ export default function BookDetail (props) {
       <div>
         <ul>
           <li><Link to='/book' className='back'>BACK</Link></li>
+          {console.log(props.showModal)}
           <li className='button' onClick={props.showModal}>Edit</li>
           <li className='button' onClick={deleteData}>Delete</li>
         </ul>
+        {console.log(data)}
         <img className={'imageHeader'} src={data.image_url} alt={data.title} />
       </div>
       <div className='content'>
